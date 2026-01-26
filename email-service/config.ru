@@ -5,30 +5,27 @@ require 'json'
 require 'mail'
 
 class App < Roda
-#  plugin :json
+  plugin :json
 
 
   use Rack::Cors do
-  allow do
+    allow do
 
+      origins_list = ENV['EZPROXY_CORS_ORIGINS'].split(',').map(&:strip)
+      puts "CORS allowed origins: #{origins_list.inspect}"
 
+      # Specify the origins that are allowed to access your API.
+      # Use '*' to allow any origin (use with caution, generally only for public APIs).
+      origins origins_list
 
-    origins_list = ENV['EZPROXY_CORS_ORIGINS'].split(',').map(&:strip)
-    puts "CORS allowed origins: #{origins_list.inspect}"
+      # Specify which resources and headers are allowed.
+      resource '*',
+        headers: :any,
+        methods: [:post],
+        credentials: true #Allows the browser to send cookies/auth headers.
 
-
-
-    # Specify the origins that are allowed to access your API.
-    # Use '*' to allow any origin (use with caution, generally only for public APIs).
-    origins origins_list
-
-    # Specify which resources and headers are allowed.
-    resource '*',
-      headers: :any,
-      methods: [:post],
-      credentials: true #Allows the browser to send cookies/auth headers.
-    end
-  end
+    end # end of allow
+  end # end of insert_before middleware
 
 
   route do |r|
