@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Redirecting to resource</title>
+  <!-- Add custom header tags here -->
+</head>
+
+<body>
+  <h1>Redirecting, please wait...</h1>
+
+  <p>This url cannot be proxied.</p>
+  <p>
+    You will be redirected to <a href="^V">^U</a> in a few seconds.
+    <br />
+    If you are not redirected, <a href="^V">click here</a>
+
+  </p>
+  <br />
+  <br />
+  <script>
+
+    const needhostData = {
+      url: 'https://acm.org'
+    };
+
+    const blob = new Blob([JSON.stringify(needhostData)],
+      { type: 'application/json; charset=UTF-8' });
+
+
+
+    navigator.sendBeacon(
+      'http://localhost:4000/needhost',
+      blob
+    )
+
+    // setTimeout("window.location.href='^V'", 5000);
+  </script>
+
+</body>
+
+</html>

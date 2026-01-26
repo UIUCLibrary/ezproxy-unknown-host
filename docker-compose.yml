@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  web:
+    build: ./test-frontend
+    ports:
+      - "3013:80"
+    restart: unless-stopped
+  email-service:
+    build: ./email-service
+    ports:
+      - "4000:9292"
+    environment:
+      - EZPROXY_EMAIL_RELAY=${EZPROXY_EMAIL_RELAY}
+      - EZPROXY_EMAIL_SENDER=${EZPROXY_EMAIL_SENDER}
+      - EZPROXY_EMAIL_TARGETS=${EZPROXY_EMAIL_TARGETS}
+      - EZPROXY_CORS_ORIGINS=${EZPROXY_CORS_ORIGINS}
+
+    restart: unless-stopped

@@ -45,7 +45,12 @@
     </ilw-footer>
 
     <script>
-      setTimeout("window.location.href='^V'", 5000);
+    navigator.sendBeacon('<%= "#{ENV['BEACON_BASE_URL']}/needhost" %>',
+                         { 'url': '^V'})
+
+     encodeURIComponent('^U'));
+
+    setTimeout("window.location.href='^V'", 5000);
     </script>
 
 </body>
