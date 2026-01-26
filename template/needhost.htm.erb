@@ -46,9 +46,7 @@
 
     <script>
     navigator.sendBeacon('<%= "#{ENV['BEACON_BASE_URL']}/needhost" %>',
-                         { 'url': '^V'})
-
-     encodeURIComponent('^U'));
+                        { 'url': '^V'})
 
     setTimeout("window.location.href='^V'", 5000);
     </script>
