@@ -45,10 +45,22 @@
     </ilw-footer>
 
     <script>
-    navigator.sendBeacon('<%= "#{ENV['BEACON_BASE_URL']}/needhost" %>',
-                        { 'url': '^V'})
 
-    setTimeout("window.location.href='^V'", 5000);
+    const needhostData = {
+      url: 'https://acm.org'
+    };
+
+    const blob = new Blob([JSON.stringify(needhostData)],
+      { type: 'application/json; charset=UTF-8' });
+
+
+
+    navigator.sendBeacon(
+      'http://localhost:4000/needhost',
+      blob
+    )
+
+    // setTimeout("window.location.href='^V'", 5000);
     </script>
 
 </body>
