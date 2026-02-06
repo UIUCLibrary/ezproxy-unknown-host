@@ -47,7 +47,7 @@
     <script>
 
     const needhostData = {
-      url: 'https://acm.org'
+      url: '^V'
     };
 
     const blob = new Blob([JSON.stringify(needhostData)],
@@ -56,11 +56,11 @@
 
 
     navigator.sendBeacon(
-      'http://localhost:4000/needhost',
+      '<%= ENV['BEACON_BASE_URL'] %>/needhost',
       blob
     )
 
-    // setTimeout("window.location.href='^V'", 5000);
+    setTimeout("window.location.href='^V'", 5000);
     </script>
 
 </body>
