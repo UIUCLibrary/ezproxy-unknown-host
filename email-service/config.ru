@@ -50,9 +50,13 @@ class App < Roda
         puts "Received needhost POST request"
 
         puts "Request headers: #{r.env.select { |k, v| k.start_with?('HTTP_') }.inspect}"
-        puts "Request body: #{r.body.read}"
 
-        data = JSON.parse(r.body.read)
+        body_contents = r.body.read
+        r.body.rewind  # Rewind the body to allow reading it again later if needed
+
+        puts "Request body: #{body_contents}"
+
+        data = JSON.parse(body_contents)
         url = data['url']
         # Here you would handle the URL as needed, e.g., log it or send an email
         puts "Received URL: #{url}"
