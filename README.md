@@ -27,11 +27,12 @@ Note - the docker-compose.yml file and docker compose on the top-level of this p
 
 Making the code a bit more flexible here so we can pretty easily create a template for testing and production.
 
-  * *BEACON_BASE_URL* - Url that the message about a needhost page being shown is sent. 
+  * *BEACON_BASE_URL* - Base url (protocol://fully-qualified-domain-name.edu). The endpoint will be appended to this.
 
 
 ## Run the bin/create_
 
+`bin/create_needhost.rb`
 
 # Installing the needhost.htm
 
