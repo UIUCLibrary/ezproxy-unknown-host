@@ -11,24 +11,24 @@ class App < Roda
 
   origins_list = ENV['EZPROXY_CORS_ORIGINS'].split(',').map(&:strip)
 
-  def timestamp
+  def self.timestamp
     Time.now.utc.iso8601
   end
 
   use Rack::Cors do
     allow do
 
-      puts timestamp + " " + "#{timestamp} CORS allowed origins: #{origins_list.inspect}"
+      puts App.timestamp + " " + "CORS allowed origins: #{origins_list.inspect}"
 
       # Specify the origins that are allowed to access your API.
       # Use '*' to allow any origin (use with caution, generally only for public APIs).
       origins origins_list
       # origins do |source_origin, env|
      #   if origins_list.include?(source_origin)
-     #     puts timestamp + " " + "CORS origin allowed: #{source_origin}"
+     #     puts App.timestamp + " " + "CORS origin allowed: #{source_origin}"
      #     trueq
      #   else
-     #     puts timestamp + " " + "CORS origin denied: #{source_origin}"
+     #     puts App.timestamp + " " + "CORS origin denied: #{source_origin}"
      #     false
      #   end
      # end
@@ -49,26 +49,26 @@ class App < Roda
       r.post do
 
 
-        puts timestamp + " " + "Origins list: #{origins_list.inspect}"
+        puts App.timestamp + " " + "Origins list: #{origins_list.inspect}"
 
-        puts timestamp + " " + "Received needhost POST request"
+        puts App.timestamp + " " + "Received needhost POST request"
 
-        puts timestamp + " " + "Request headers: #{r.env.select { |k, v| k.start_with?('HTTP_') }.inspect}"
+        puts App.timestamp + " " + "Request headers: #{r.env.select { |k, v| k.start_with?('HTTP_') }.inspect}"
 
         body_contents = r.body.read
         r.body.rewind  # Rewind the body to allow reading it again later if needed
 
-        puts timestamp + " " + "Request body: #{body_contents}"
+        puts App.timestamp + " " + "Request body: #{body_contents}"
 
         data = JSON.parse(body_contents)
         url = data['url']
         # Here you would handle the URL as needed, e.g., log it or send an email
-        puts timestamp + " " + "Received URL: #{url}"
+        puts App.timestamp + " " + "Received URL: #{url}"
 
 
-        puts timestamp + " " + "Ezproxy  ENV dump:\n"
+        puts App.timestamp + " " + "Ezproxy  ENV dump:\n"
         ENV.select{ |key, value| key =~ /EZPROXY/ }.each do |k,v|
-          puts timestamp + " " + "#{k}=#{v}"
+          puts App.timestamp + " " + "#{k}=#{v}"
         end
 
 
@@ -89,7 +89,7 @@ class App < Roda
           body     "The following URL triggered a needhost request:\n\n#{url}\n"
         end
 
-        puts timestamp + " " + "Sent email to #{ENV['EZPROXY_EMAIL_TARGETS']}"
+        puts App.timestamp + " " + "Sent email to #{ENV['EZPROXY_EMAIL_TARGETS']}"
 
         { status: 'success', message: 'URL received' }
 
