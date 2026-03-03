@@ -1,7 +1,9 @@
-FROM alpine:3.19
+FROM debian:bookworm-slim
 
 # Install sqlite3
-RUN apk add --no-cache sqlite
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    sqlite3 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create a directory for the database
 RUN mkdir -p /data
