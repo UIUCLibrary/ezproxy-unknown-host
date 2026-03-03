@@ -21,4 +21,7 @@ WORKDIR /data
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Keep the container running
+# Note: SQLite is file-based and doesn't run as a server.
+# Access the database via 'docker compose exec database sqlite3 /data/events.db'
+# or by mounting the volume to other containers that need database access.
 CMD ["tail", "-f", "/dev/null"]
