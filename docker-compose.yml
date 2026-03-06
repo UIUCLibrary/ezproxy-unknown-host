@@ -17,3 +17,11 @@ services:
       - EZPROXY_CORS_ORIGINS=${EZPROXY_CORS_ORIGINS}
 
     restart: unless-stopped
+  database:
+    build: ./database-service
+    volumes:
+      - sqlite-data:/data
+    restart: unless-stopped
+
+volumes:
+  sqlite-data:
