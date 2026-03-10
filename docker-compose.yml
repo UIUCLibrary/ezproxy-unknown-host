@@ -19,19 +19,20 @@ services:
     restart: unless-stopped
   database:
     build: ./database-service
-    volumes:
-      - sqlite-data:/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-events}
+      - POSTGRES_USER=${POSTGRES_USER:-ezproxy}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: unless-stopped
   cleanup-service:
     build: ./cleanup-service
-    volumes:
-      - sqlite-data:/data
     environment:
       - CLEANUP_TIME=${CLEANUP_TIME:-02:00}
       - RETENTION_DAYS=${RETENTION_DAYS:-7}
+      - PGHOST=database
+      - PGDATABASE=${POSTGRES_DB:-events}
+      - PGUSER=${POSTGRES_USER:-ezproxy}
+      - PGPASSWORD=${POSTGRES_PASSWORD}
     restart: unless-stopped
     depends_on:
       - database
-
-volumes:
-  sqlite-data:

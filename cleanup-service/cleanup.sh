@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Database file path
-DB_FILE="/data/events.db"
-
 # Cleanup time defaults to 02:00 if not set
 CLEANUP_TIME=${CLEANUP_TIME:-"02:00"}
 
@@ -11,12 +8,12 @@ RETENTION_DAYS=${RETENTION_DAYS:-7}
 
 echo "Cleanup service started. Will delete events older than $RETENTION_DAYS days daily at $CLEANUP_TIME."
 
-# Wait for the database file to be available before entering the main loop
-until [ -f "$DB_FILE" ]; do
-    echo "Waiting for database at $DB_FILE..."
+# Wait for the PostgreSQL database to be available before entering the main loop
+until psql -c '\q' 2>/dev/null; do
+    echo "Waiting for database..."
     sleep 5
 done
-echo "Database found at $DB_FILE."
+echo "Database is ready."
 
 while true; do
     # Calculate seconds since midnight for current time and target time
@@ -34,6 +31,6 @@ while true; do
     sleep "$sleep_seconds"
 
     echo "Running cleanup at $(date)."
-    sqlite3 "$DB_FILE" "PRAGMA busy_timeout = 5000; DELETE FROM events WHERE timestamp < datetime('now', '-${RETENTION_DAYS} days');"
+    psql -c "DELETE FROM events WHERE timestamp < NOW() - INTERVAL '${RETENTION_DAYS} days';"
     echo "Cleanup completed."
 done
