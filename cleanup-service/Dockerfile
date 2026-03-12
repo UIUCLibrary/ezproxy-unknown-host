@@ -1,8 +1,8 @@
 FROM debian:bookworm-slim
 
-# Install sqlite3
+# Install postgresql-client
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    sqlite3 \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the cleanup script

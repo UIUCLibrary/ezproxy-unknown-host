@@ -1,55 +1,62 @@
 # Database Service
 
-This directory contains the configuration for a lightweight SQLite3 database container.
+This directory contains the configuration for a PostgreSQL database container.
 
 ## Features
 
-- **Database**: SQLite3
+- **Database**: PostgreSQL 16
 - **Table**: `events` with the following schema:
-  - `id`: INTEGER PRIMARY KEY AUTOINCREMENT
-  - `timestamp`: DATETIME DEFAULT CURRENT_TIMESTAMP
+  - `id`: SERIAL PRIMARY KEY
+  - `timestamp`: TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
   - `url`: TEXT NOT NULL
+
+## Environment Variables
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `POSTGRES_DB` | No | `events` | Name of the database |
+| `POSTGRES_USER` | No | `ezproxy` | PostgreSQL user |
+| `POSTGRES_PASSWORD` | Yes | — | PostgreSQL password |
 
 ## Usage
 
-The database container is automatically started with `docker compose up`. The database file is stored in a persistent volume called `sqlite-data` to ensure data persists across container restarts.
+The database container is automatically started with `docker compose up`. PostgreSQL listens on port 5432 on the default Docker Compose network and is accessible to other services by hostname `database`.
 
 ### Accessing the Database
 
 To access the database from within the container:
 
 ```bash
-docker compose exec database sqlite3 /data/events.db
+docker compose exec database psql -U ezproxy -d events
 ```
 
 ### Inserting Data
 
 ```bash
-docker compose exec database sqlite3 /data/events.db "INSERT INTO events (url) VALUES ('https://example.com');"
+docker compose exec database psql -U ezproxy -d events -c "INSERT INTO events (url) VALUES ('https://example.com');"
 ```
 
 ### Querying Data
 
 ```bash
-docker compose exec database sqlite3 /data/events.db "SELECT * FROM events;"
+docker compose exec database psql -U ezproxy -d events -c "SELECT * FROM events;"
 ```
 
 ### Viewing Table Schema
 
 ```bash
-docker compose exec database sqlite3 /data/events.db ".schema events"
+docker compose exec database psql -U ezproxy -d events -c "\d events"
 ```
 
 ## Files
 
-- `Dockerfile`: Defines the container image based on Debian Bookworm Slim with SQLite3
-- `init.sql`: SQL script to create the events table
-- `entrypoint.sh`: Initialization script that creates the database and table on first run
+- `Dockerfile`: Defines the container image based on the official `postgres:16` image
+- `init.sql`: SQL script to create the `events` table, run automatically on first start
 - `README.md`: This file
 
 ## Database Persistence
 
-The database is stored in a Docker volume named `sqlite-data`, which persists data across container restarts and updates. To remove the database and start fresh:
+The database is stored in a Docker-managed volume inside the PostgreSQL container. To remove the database and start fresh:
 
 ```bash
 docker compose down -v
