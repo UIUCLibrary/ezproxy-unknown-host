@@ -24,6 +24,8 @@ COPY --from=build --chown=ruby:ruby /app /app
 
 # note - we may just end up copyying . . 
 COPY --chown=ruby:ruby config.ru config.ru
+COPY --chown=ruby:ruby db.rb db.rb
+
 
 ENV RACK_ENV=production
 
@@ -39,6 +41,16 @@ ENV EZPROXY_EMAIL_SENDER=${EZPROXY_EMAIL_SENDER}
 
 ARG EZPROXY_CORS_ORIGINS
 ENV EZPROXY_CORS_ORIGINS=${EZPROXY_CORS_ORIGINS}
+
+ARG POSTGRES_DB
+ENV POSTGRES_DB=${POSTGRES_DB}
+
+ARG POSTGRES_USER
+ENV POSTGRES_USER=${POSTGRES_USER}
+
+ARG POSTGRES_PASSWORD
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
 
 EXPOSE 9292
 

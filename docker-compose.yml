@@ -6,8 +6,8 @@ services:
     ports:
       - "3013:80"
     restart: unless-stopped
-  email-service:
-    build: ./email-service
+  event-listener-service:
+    build: ./event-listener-service
     ports:
       - "4000:9292"
     environment:
@@ -15,6 +15,10 @@ services:
       - EZPROXY_EMAIL_SENDER=${EZPROXY_EMAIL_SENDER}
       - EZPROXY_EMAIL_TARGETS=${EZPROXY_EMAIL_TARGETS}
       - EZPROXY_CORS_ORIGINS=${EZPROXY_CORS_ORIGINS}
+      - PGHOST=database
+      - POSTGRES_DB=${POSTGRES_DB:-events}
+      - POSTGRES_USER=${POSTGRES_USER:-ezproxy}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
     restart: unless-stopped
   database:
