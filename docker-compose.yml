@@ -28,6 +28,20 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-ezproxy}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: unless-stopped
+  digest-service:
+    build: ./digest-service
+    environment:
+      - DIGEST_TIME=${DIGEST_TIME:-06:00}
+      - EZPROXY_EMAIL_RELAY=${EZPROXY_EMAIL_RELAY}
+      - EZPROXY_EMAIL_SENDER=${EZPROXY_EMAIL_SENDER}
+      - EZPROXY_EMAIL_TARGETS=${EZPROXY_EMAIL_TARGETS}
+      - PGHOST=database
+      - PGDATABASE=${POSTGRES_DB:-events}
+      - PGUSER=${POSTGRES_USER:-ezproxy}
+      - PGPASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped
+    depends_on:
+      - database
   cleanup-service:
     build: ./cleanup-service
     environment:
