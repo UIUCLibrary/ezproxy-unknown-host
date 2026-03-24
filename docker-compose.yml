@@ -7,7 +7,10 @@ services:
       - "3013:80"
     restart: unless-stopped
   event-listener-service:
-    build: ./event-listener-service
+    build:
+      context: ./event-listener-service
+      args:
+        - RUBY_IMAGE_TAG=${RUBY_IMAGE_TAG:-3.3}
     ports:
       - "4000:9292"
     environment:
@@ -29,7 +32,10 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: unless-stopped
   digest-service:
-    build: ./digest-service
+    build:
+      context: ./digest-service
+      args:
+        - RUBY_IMAGE_TAG=${RUBY_IMAGE_TAG:-3.3}
     environment:
       - DIGEST_TIME=${DIGEST_TIME:-06:00}
       - EZPROXY_EMAIL_RELAY=${EZPROXY_EMAIL_RELAY}
@@ -39,6 +45,7 @@ services:
       - PGDATABASE=${POSTGRES_DB:-events}
       - PGUSER=${POSTGRES_USER:-ezproxy}
       - PGPASSWORD=${POSTGRES_PASSWORD}
+
     restart: unless-stopped
     depends_on:
       - database

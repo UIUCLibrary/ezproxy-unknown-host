@@ -1,4 +1,6 @@
-FROM ruby:3.3 AS base
+
+ARG RUBY_IMAGE_TAG
+FROM ruby:${RUBY_IMAGE_TAG} AS base
 #ARG RUBY_VERSION=3.1.2
 #FROM ruby:${RUBY_VERSION}-slim AS base
 
