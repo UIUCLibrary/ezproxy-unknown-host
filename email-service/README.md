@@ -29,10 +29,30 @@ For more information, read the [MDN Cross-Origin Resource Sharing (CORS) article
 
     * a POST to `needhost' with a json in the body 
       ```
-      url=the_attempted_url
+      {"url":"the_attempted_url"}
       ```
       
 See the [template/needhost.htm.erb](template/needhost.htm.erb template) to see a javascript call that calls this endpoint.
+
+# Testing 
+
+## Local testing....
+
+Probably easiest to use docker containers w/ curl
+
+  1. `docker compose build`
+  1. `docker compose up -d`
+  1. `curl -X POST 'http://localhost:4000/needhost' -H 'Content-Type: application/json' -d '{"url":"https://testing.library.illinois.edu/2026_03_24_02"}'`
+
+### Did it record?
+
+###
+
+### 
+
+
+  Note - depending on your `EZPROXY_CORS_ORIGINS` in your `.env` file, you may need to pass in -H "Origin: http://<some-origin>" to avoid some warnings and errors.  If you have `EZPROXY_CORS_ORIGINS="http://localhost:4000` it should work.
+
       
 
       
