@@ -8,7 +8,6 @@ The ruby code for now is geared towards the UIUC environment, which has an inter
   * EZPROXY_ALERT_EMAIL_TARGETS - comma separated list of email addresses for sending alerts
   * EZPROXY_EMAIL_RELAY         - smtp target
   * EZPROXY_EMAIL_SENDER        - the email for the "from" address
-  * EZPROXY_CORS_ORIGINS        - your ezproxy base urls, see section below
   * RUBY_IMAGE_TAG              - Ruby version to base docker image off of, 
                                   used to keep ruby versiosn consistent for now
                                   between containers in the project
