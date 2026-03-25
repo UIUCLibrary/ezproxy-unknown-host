@@ -10,7 +10,7 @@ The ruby code for now is geared towards the UIUC environment, which has an inter
   * EZPROXY_EMAIL_SENDER        - the email for the "from" address
   * EZPROXY_CORS_ORIGINS        - your ezproxy base urls, see section below
   * RUBY_IMAGE_TAG              - Ruby version to base docker image off of, 
-                                  used to keep ruby versiosn consistent for now
+                                  used to keep ruby version consistent for now
                                   between containers in the project
 
 
