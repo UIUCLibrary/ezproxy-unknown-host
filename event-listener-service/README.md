@@ -51,7 +51,7 @@ Probably easiest to use docker containers w/ curl
 
   1. `docker compose exec -it database bash`
   1. `psql -U ezproxy events`
-  1. `select * from events`
+  1. `select * from events;`
 
 
 
