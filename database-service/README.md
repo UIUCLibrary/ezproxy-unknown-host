@@ -17,6 +17,7 @@ This directory contains the configuration for a PostgreSQL database container.
 | `POSTGRES_DB` | No | `events` | Name of the database |
 | `POSTGRES_USER` | No | `ezproxy` | PostgreSQL user |
 | `POSTGRES_PASSWORD` | Yes | — | PostgreSQL password |
+| `RETENTION_DAYS` | No |  `7` | Used in testing cleanup-serice |
 
 ## Usage
 
