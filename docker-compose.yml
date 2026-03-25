@@ -29,6 +29,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-events}
       - POSTGRES_USER=${POSTGRES_USER:-ezproxy}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - RETENTION_DAYS=${RETENTION_DAYS:-7}
     volumes:
       - db-data:/var/lib/postgresql/data
     restart: unless-stopped
