@@ -1,10 +1,9 @@
 require 'roda'
 require 'rack/cors'
 require 'json'
-
-require 'mail'
-
 require 'time'
+
+require_relative 'db'
 
 class App < Roda
   plugin :json
@@ -14,6 +13,8 @@ class App < Roda
   def self.timestamp
     Time.now.utc.iso8601
   end
+
+
 
   use Rack::Cors do
     allow do
@@ -49,50 +50,28 @@ class App < Roda
       r.post do
 
 
-        puts App.timestamp + " " + "Origins list: #{origins_list.inspect}"
+        puts "#{App.timestamp} Origins list: #{origins_list.inspect}"
 
-        puts App.timestamp + " " + "Received needhost POST request"
+        puts "#{App.timestamp} Received needhost POST request"
 
-        puts App.timestamp + " " + "Request headers: #{r.env.select { |k, v| k.start_with?('HTTP_') }.inspect}"
+        puts "#{App.timestamp} Request headers: #{r.env.select { |k, v| k.start_with?('HTTP_') }.inspect}"
 
         body_contents = r.body.read
         r.body.rewind  # Rewind the body to allow reading it again later if needed
 
-        puts App.timestamp + " " + "Request body: #{body_contents}"
+        puts "#{App.timestamp} Request body: #{body_contents}"
 
         data = JSON.parse(body_contents)
         url = data['url']
         # Here you would handle the URL as needed, e.g., log it or send an email
-        puts App.timestamp + " " + "Received URL: #{url}"
+        puts "#{App.timestamp} Received URL: #{url}"
 
+        puts "#{App.timestamp} going to insert #{url} into database\n"
+        DB[:events].insert(url: url)
 
-        puts App.timestamp + " " + "Ezproxy  ENV dump:\n"
-        ENV.select{ |key, value| key =~ /EZPROXY/ }.each do |k,v|
-          puts App.timestamp + " " + "#{k}=#{v}"
-        end
-
-
-        Mail.defaults do
-          # having toruble with the cert - but not
-          # sure from the documentation on answers if there actually is a
-          # cert to validate against.
-
-          delivery_method :smtp, address: ENV['EZPROXY_EMAIL_RELAY'], port: 25, enable_starttls_auto: false, ssl: false, tls: false
-        end
-
-
-
-        mail = Mail.deliver do
-          from     ENV['EZPROXY_EMAIL_SENDER']
-          to       ENV['EZPROXY_EMAIL_TARGETS'].split(',')
-          subject  "EZproxy needhost triggered"
-          body     "The following URL triggered a needhost request:\n\n#{url}\n"
-        end
-
-        puts App.timestamp + " " + "Sent email to #{ENV['EZPROXY_EMAIL_TARGETS']}"
+        puts "#{App.timestamp} inserted into database\n"
 
         { status: 'success', message: 'URL received' }
-
 
       end
     end

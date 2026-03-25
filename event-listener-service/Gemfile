@@ -4,4 +4,7 @@ gem "roda"
 gem "puma"
 gem "rackup"
 gem 'rack-cors'
-gem 'mail'
+gem 'sequel'
+
+# not clear to me this is actually need
+gem 'pg'
