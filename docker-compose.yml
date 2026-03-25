@@ -18,6 +18,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-events}
       - POSTGRES_USER=${POSTGRES_USER:-ezproxy}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - EZPROXY_CORS_ORIGINS=${EZPROXY_CORS_ORIGINS}
 
     restart: unless-stopped
     depends_on:
