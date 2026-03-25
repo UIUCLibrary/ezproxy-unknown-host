@@ -1,10 +1,7 @@
-# Email Service
+# Event Listener Service
 
 This is a docker container that will run a ruby Roda server with a simple api. At some point we may need to tweak this to have more counter measures against bots.
 
-The docker compose file is geared towards testing. I'd recommend using a docker file with just the "email-service", with whatever tweaks you need for your environment.
-
-The ruby code for now is geared towards the UIUC environment, which has an internal smtp server for sending mail.
 
 # Environmental Variables
 
@@ -12,6 +9,9 @@ The ruby code for now is geared towards the UIUC environment, which has an inter
   * EZPROXY_EMAIL_RELAY         - smtp target
   * EZPROXY_EMAIL_SENDER        - the email for the "from" address
   * EZPROXY_CORS_ORIGINS        - your ezproxy base urls, see section below
+  * RUBY_IMAGE_TAG              - Ruby version to base docker image off of, 
+                                  used to keep ruby versiosn consistent for now
+                                  between containers in the project
 
 
 ## EZPROXY_CORS_ORIGINS example
@@ -44,14 +44,16 @@ Probably easiest to use docker containers w/ curl
   1. `docker compose up -d`
   1. `curl -X POST 'http://localhost:4000/needhost' -H 'Content-Type: application/json' -d '{"url":"https://testing.library.illinois.edu/2026_03_24_02"}'`
 
+  Note - depending on your `EZPROXY_CORS_ORIGINS` in your `.env` file, you may need to pass in -H "Origin: http://<some-origin>" to avoid some warnings and errors.  If you have `EZPROXY_CORS_ORIGINS="http://localhost:4000` it should work.
+
+
 ### Did it record?
 
-###
+  1. `docker compose exec -it database bash`
+  1. `psql -U ezproxy events`
+  1. `select * from events`
 
-### 
 
-
-  Note - depending on your `EZPROXY_CORS_ORIGINS` in your `.env` file, you may need to pass in -H "Origin: http://<some-origin>" to avoid some warnings and errors.  If you have `EZPROXY_CORS_ORIGINS="http://localhost:4000` it should work.
 
       
 
