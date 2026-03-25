@@ -2,6 +2,11 @@ require 'pg'
 require 'mail'
 require 'time'
 
+# having some issues where information
+# is not appearing in docker logs, I suspect
+# there's buffering going on. :wq
+$stdout.sync = true
+
 # Digest send time defaults to 06:00 if not set
 DIGEST_TIME = ENV.fetch('DIGEST_TIME', '06:00')
 
@@ -116,7 +121,10 @@ loop do
   puts "#{timestamp} Next digest scheduled in #{sleep_secs} seconds (at #{DIGEST_TIME})."
   sleep sleep_secs
 
-  digest_date = Date.new(Time.now.utc.year, Time.now.utc.month, Time.now.utc.day) - 1
+  digest_date = Date.new(Time.now.utc.year,
+                        Time.now.utc.month,
+                        Time.now.utc.day) - 1
+
   puts "#{timestamp} Running digest for #{digest_date}."
 
   begin
