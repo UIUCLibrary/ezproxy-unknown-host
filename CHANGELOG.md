@@ -5,16 +5,19 @@ and this project attempts to adhere to [Semantic Versioning](https://semver.org/
 
 ## Unreleased
 
+ 
+  
+## [1.1.1] 2026-03-27
+
 ### Added
 
-  - v1.1.1 Added this changelog
+  - Added this changelog
 
 ### Changed
 
-  - v1.1.1 Modified body text of digest to have two tables, one a listing of urls and another of summary by hostname 
-  
-## [1.1.1]
-  
+  - Modified body text of digest to have two tables, one a listing of urls and another of summary by hostname 
+
+
 ## [1.1.0] 2026-03-25
 
 ### Added 
