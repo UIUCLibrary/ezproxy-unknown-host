@@ -13,5 +13,6 @@ RUN useradd ruby --home /app --shell /bin/bash
 USER ruby:ruby
 
 COPY --chown=ruby:ruby digest.rb digest.rb
+COPY --chown=ruby:ruby lib lib
 
 CMD ["ruby", "digest.rb"]
