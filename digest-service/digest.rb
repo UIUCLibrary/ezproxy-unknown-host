@@ -1,6 +1,8 @@
 require 'mail'
 require 'time'
 
+require_relative 'lib/digest_body'
+
 # having some issues where information
 # is not appearing in docker logs, I suspect
 # there's buffering going on. :wq
@@ -53,6 +55,8 @@ def seconds_until(target_hhmm)
 end
 
 puts "#{timestamp} Digest service started. Will send digest daily at #{DIGEST_TIME}."
+
+
 
 
 loop do
