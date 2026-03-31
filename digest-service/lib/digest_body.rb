@@ -1,4 +1,6 @@
 require 'sequel'
+require 'uri'
+require 'yaml'
 
 # This class combines logic and view into one
 # if this ends up being more complex, we can split it
@@ -24,6 +26,21 @@ class DigestBody
         sleep 5
       end
     end
+  end
+
+  def load_ignored_hosts
+    ignore_file = File.join(File.dirname(__FILE__), '..', 'hostignore.yml')
+    return [] unless File.exist?(ignore_file)
+    Array(YAML.safe_load_file(ignore_file))
+  end
+
+  def ignored_host?(url, ignored_hosts)
+    return false if ignored_hosts.empty?
+    host = URI.parse(url).host
+    return false if host.nil?
+    ignored_hosts.any? { |pattern| host == pattern || host.end_with?(".#{pattern}") }
+  rescue URI::InvalidURIError
+    false
   end
 
   def create_event_table(rows)
@@ -67,11 +84,15 @@ class DigestBody
 
     wait_for_database
 
+    ignored_hosts = load_ignored_hosts
+
     yesterdays_rows = @DB[:events].
                       where(timestamp: date..(date + 1)).
                       select_append { Sequel.lit("timestamp AT TIME ZONE 'America/Chicago' AS local_time") }.
                       order(:timestamp, :url).
                       all
+
+    yesterdays_rows = yesterdays_rows.reject { |row| ignored_host?(row[:url], ignored_hosts) }
 
     if yesterdays_rows.empty?
       @text = "EZproxy daily digest for #{date.strftime('%B %-d, %Y')}\n\nNo unknown-host events were recorded on this date.\n"

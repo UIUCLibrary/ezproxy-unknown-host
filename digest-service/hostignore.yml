@@ -1,0 +1,7 @@
+# Hostnames to exclude from the daily digest email.
+# Any URL whose host matches or is a subdomain of an entry here
+# will be filtered from both the URL table and the hostname summary.
+#
+# Example:
+# - facebook.com
+# - ads.example.com
