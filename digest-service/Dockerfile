@@ -14,5 +14,6 @@ USER ruby:ruby
 
 COPY --chown=ruby:ruby digest.rb digest.rb
 COPY --chown=ruby:ruby lib lib
+COPY --chown=ruby:ruby hostignore.yml hostignore.yml
 
 CMD ["ruby", "digest.rb"]
