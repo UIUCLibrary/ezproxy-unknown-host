@@ -5,7 +5,9 @@ and this project attempts to adhere to [Semantic Versioning](https://semver.org/
 
 ## Unreleased
 
- 
+## [1.1.1.1] 2026-03-31
+
+Fixed bug with missing require_relative for lib/digest_body
   
 ## [1.1.1] 2026-03-27
 
